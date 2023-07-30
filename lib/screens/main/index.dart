@@ -22,6 +22,7 @@ class MainScreen extends HookWidget {
       backgroundColor: Colors.indigo.shade100.withOpacity(.6),
       appBar: AppBar(
         title: const Text("Sticker Creator"),
+        centerTitle: true,
       ),
       body: getBody(navbarIndex.value),
       bottomNavigationBar: BottomNavigationBar(

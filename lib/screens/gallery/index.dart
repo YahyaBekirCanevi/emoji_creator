@@ -2,6 +2,7 @@ import 'package:emoji_creator/core/components/card_xt.dart';
 import 'package:emoji_creator/core/mock/gallery_list.dart';
 import 'package:emoji_creator/core/util/sizedbox_extension.dart';
 import 'package:emoji_creator/domain/model/gallery_item.dart';
+import 'package:emoji_creator/screens/gallery_detail/index.dart';
 import 'package:flutter/material.dart';
 
 class GalleryScreen extends StatelessWidget {
@@ -20,11 +21,22 @@ class GalleryScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: Text(galleryItem.title),
+              child: Text(
+                galleryItem.title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
             ...List.generate(
               galleryItem.stickerPackList.length,
               (index) => CardXt(
+                onTap: () => Navigator.of(context).push(
+                  GalleryDetailScreen.getRoute(
+                    galleryItem.stickerPackList[index],
+                  ),
+                ),
                 child: _StickerList(galleryItem.stickerPackList[index]),
               ),
             ),
@@ -42,33 +54,36 @@ class _StickerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 64,
-      child: Row(
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxHeight: 90,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            children: [
+              Text(pack.title),
+              Expanded(child: 1.width),
+              const Icon(Icons.keyboard_arrow_right, size: 16),
+            ],
+          ),
+          10.height,
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: pack.values.length, //Random().nextInt(5) + 5,
               itemBuilder: (_, i) => Container(
-                width: 64,
                 margin: const EdgeInsets.only(right: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: pack.values[i],
                 ),
+                child: 64.square,
               ),
             ),
           ),
-          const SizedBox.square(
-            dimension: 80,
-            child: Center(
-              child: Icon(
-                Icons.keyboard_arrow_right,
-                size: 24,
-              ),
-            ),
-          ),
+          4.height,
         ],
       ),
     );
